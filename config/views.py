@@ -63,17 +63,17 @@ class list_index(TemplateView):
                 print(avail_.count())
                 html +="<td>&nbsp;&nbsp;&nbsp;</td>"
                 if (avail_.count() == 0):
-                    html += f"<td style='text-align:center'><i class='hourglass icon'></td>"
+                    html += f"<td style='text-align:center'><i class='hourglass half icon'></td>"
                 else:
                     icon = ""
                     if avail_[0].state == 0:
-                        icon = '<i class="hourglass icon"></i>'
+                        icon = '<i class="hourglass half icon"></i>'
                     if avail_[0].state == 1:
-                        icon = '<i class="question circle icon"></i>'
+                        icon = '<i class="orange question circle icon"></i>'
                     if avail_[0].state == 2:
-                        icon = '<i class="thumbs down icon"></i>'
+                        icon = '<i class="red thumbs down icon"></i>'
                     if avail_[0].state == 3:
-                        icon = '<i class="thumbs up icon"></i>'
+                        icon = '<i class="green thumbs up icon"></i>'
 
                     html += f"<td style='text-align:center'>{icon}</td>"
 
