@@ -52,28 +52,25 @@ class list_index(TemplateView):
         html += "</tr>"
 
         for player in User.objects.filter(active=True):
-            html += f"<tr style='border: 1px solid black'><td>{player.name}</td>"
+            html += f"<tr style='border: 1px solid black'><td>{player.name} </td>"
 
-            print(gamedays)
 
             for gameday in Gameday.objects.all().order_by('date'):
-                print(player)
-                print(gameday)
                 avail_ = Availbility.objects.filter(player=player,gameday=gameday)
-                print(avail_.count())
                 html +="<td>&nbsp;&nbsp;&nbsp;</td>"
                 if (avail_.count() == 0):
                     html += f"<td style='text-align:center'><i class='hourglass half icon'></td>"
                 else:
                     icon = ""
+                    whatsapptext=f"?text=Are%20you%20available%20for%20{gameday.date}?%20Please%20update%20Waatea!"
                     if avail_[0].state == 0:
-                        icon = '<i class="hourglass half icon"></i>'
+                        icon = f'<i class="hourglass half icon"></i>&nbsp<a href="https://wa.me/{player.mobile_phone}{whatsapptext}" target="_blank"><i class="whatsapp icon"></a>'
                     if avail_[0].state == 1:
-                        icon = '<i class="orange question circle icon"></i>'
+                        icon = f'<i class="orange question circle icon"></i>&nbsp<a href="https://wa.me/{player.mobile_phone}{whatsapptext}" target="_blank"><i class="whatsapp icon"></a>'
                     if avail_[0].state == 2:
-                        icon = '<i class="red thumbs down icon"></i>'
+                        icon = f'<i class="red thumbs down icon"></i>'
                     if avail_[0].state == 3:
-                        icon = '<i class="green thumbs up icon"></i>'
+                        icon = f'<i class="green thumbs up icon"></i>'
 
                     html += f"<td style='text-align:center'>{icon}</td>"
 
