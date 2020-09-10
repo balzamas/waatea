@@ -27,23 +27,19 @@ Welcome {{request.user.name }}
 
 
 
-<div class="row">
+<div class="ui three stackable cards">
 
 {% for availability in view.getgamelist %}
 
-    <div class="col-md-4">
-
-        <div class="card mb-2">
-
-            <div class="card-body">
-
-              <h5 class="card-title">{{ availability.gameday.date }}</h5>
+        <div class="card">
+          <div class="content">
+            <a class="header">{{ availability.gameday.date }}</a>
               {% for game in availability.gameday.games.all %}
                  <p class="card-text">  {{ game.home }} vs {{ game.away }}</p>
                  <p class="card-text">{{ game.team }} // {{ game.time }}</p>
               {% endfor %}
 
-
+              <div width="900px">
                 {% if availability.state == 0 %}
                   <button class="availbutton ui circular green icon button" id="availbutton0{{ availability.id }}" data-val=0 data-catid="{{ availability.id }}">
                 {% else %}
@@ -59,7 +55,7 @@ Welcome {{request.user.name }}
                 {% endif %}
                   <i class="thumbs up icon huge"></i>
                 </button>
-&nbsp;&nbsp;
+                &nbsp;&nbsp;
                 {% if availability.state == 1 %}
                   <button class="availbutton ui circular green icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
                 {% else %}
@@ -75,11 +71,13 @@ Welcome {{request.user.name }}
                 {% endif %}
                   <i class="thumbs down icon huge"></i>
                 </button>
+  </div>
+
+  </div>
+
             </div>
 
-        </div>
 
-    </div>
 
     {% endfor %}
 
