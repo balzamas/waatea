@@ -57,7 +57,7 @@ class Gameday(MotherModel):
     ordering = ['date']
 
     def __str__(self):
-        return f"{self.date} - {self.season} - {self.games}"
+        return f"{self.date} - {self.season}"
 
 class Availbility(MotherModel):
     STATE_CHOICES=[
