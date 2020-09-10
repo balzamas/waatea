@@ -11,7 +11,7 @@
   </head>
 <body>
 {% block page_content %}
-<img src="{% static 'images/rcwlogo.jpg' %}">
+<a href="/"><img src="{% static 'images/rcwlogo.jpg' %}"></a>
 <h1>Availability List</h1>
 
 {% if not request.user.is_authenticated %}
