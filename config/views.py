@@ -35,6 +35,19 @@ class list_index(TemplateView):
             html += f"<th></th><th style='text-align:center'>{gameday.date}"
             for game in gameday.games.all():
                 html += f"<br>{game.home} - {game.away}"
+
+
+            dontknow = Availbility.objects.filter(gameday=gameday, state=1)
+            no = Availbility.objects.filter(gameday=gameday, state=2)
+            yes = Availbility.objects.filter(gameday=gameday, state=3)
+            notset = User.objects.filter(active=True).count() - dontknow.count() - no.count() - yes.count()
+            html += "<p>"
+            html += f'<p style="color:black">Not set: {notset}</p>'
+            html += f'<p style="color:orange">Not sure: {dontknow.count()}</p>'
+            html += f'<p style="color:red">No: {no.count()}</p>'
+            html += f'<p style="color:green">Yes!: {yes.count()}</p>'
+            html += "</p>"
+
             html += "</th>"
         html += "</tr>"
 
