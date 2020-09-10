@@ -23,7 +23,7 @@ certificatesResolvers:
 http:
   routers:
     web-router:
-      rule: "Host(`waatea.vip`) || Host(`www.waatea.vip`) || Host(`waatea.rugbywinterthur.ch`)"
+      rule: "Host(`waatea.vip`) || Host(`www.waatea.vip`)"
 
       entryPoints:
         - web
@@ -33,7 +33,7 @@ http:
       service: django
 
     web-secure-router:
-      rule: "Host(`waatea.vip`) || Host(`www.waatea.vip`) || Host(`waatea.rugbywinterthur.ch`)"
+      rule: "Host(`waatea.vip`) || Host(`www.waatea.vip`)"
 
       entryPoints:
         - web-secure
