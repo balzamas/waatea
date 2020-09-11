@@ -25,7 +25,6 @@
 
     <!-- This file stores project-specific CSS -->
 
-    <link href="{% static 'css/project.css' %}" rel="stylesheet">
 
 
     {% endblock %}
@@ -89,8 +88,9 @@
       <p>Welcome {{request.user.name }}!</p>
       {% endif %}
 
-      <p><a href="join/">Set your availability</a></p>
-      <p><a href="list/">See availabilities</a></p>
+      <a href="join/">Set your availability</a><br>
+      <p><a href="gamedays/">See availabilities (List)</a></p><br>
+      <p><a href="list/">See availabilities (Megatable)</a></p><br>
 
       Problems? Contact president@rugbywinterthur.ch<br>
       <a href="https://github.com/balzamas/waatea/issues">Dev issues</a>

@@ -8,18 +8,21 @@
        <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
 
+
   </head>
 <body>
 {% block page_content %}
+
 <div style="margin:20px">
 <div class="row">
   <div class="column30">
     <a href="/"><img src="{% static 'images/rcwlogo.jpg' %}"></a>
   </div>
   <div class="column70">
-    <h1>Availability List</h1>
+    <h1>Game List</h1>
   </div>
 </div>
+
 {% if not request.user.is_authenticated %}
 <a href="/">Login first</a>
 
@@ -28,13 +31,18 @@
 Welcome {{request.user.name }}
 <hr>
 
+<div align="center">
+   <div class="container">
+        {% autoescape off %}{{ view.generatetable }}{% endautoescape %}
+  </div>
+</div>
 
-  {% autoescape off %}{{ view.generatetable }}{% endautoescape %}
+
+
 
 {% endif %}
 
 {% endblock %}
-
 </div>
 </body>
 
