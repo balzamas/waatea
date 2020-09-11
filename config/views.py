@@ -4,7 +4,14 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from waateax.users.models import User
 
-class game_index(TemplateView):
+def calc_avail_totals(gameday):
+    dontknow = Availbility.objects.filter(gameday=gameday, player__active=True, state=1)
+    no = Availbility.objects.filter(gameday=gameday, player__active=True, state=2)
+    yes = Availbility.objects.filter(gameday=gameday, player__active=True, state=3)
+    notset = User.objects.filter(active=True).count() - dontknow.count() - no.count() - yes.count()
+    return dontknow, no, yes, notset
+
+class join_index(TemplateView):
     model = Gameday
     template_name = "pages/join.html"
 
@@ -20,8 +27,7 @@ class game_index(TemplateView):
                     check.save()
 
 
-        return Availbility.objects.filter(player=self.request.user)
-
+        return Availbility.objects.filter(player=self.request.user).order_by('gameday__date')
 
 class list_index(TemplateView):
     model = User
@@ -36,11 +42,7 @@ class list_index(TemplateView):
             for game in gameday.games.all():
                 html += f"<br>{game.home} - {game.away}"
 
-
-            dontknow = Availbility.objects.filter(gameday=gameday, state=1)
-            no = Availbility.objects.filter(gameday=gameday, state=2)
-            yes = Availbility.objects.filter(gameday=gameday, state=3)
-            notset = User.objects.filter(active=True).count() - dontknow.count() - no.count() - yes.count()
+            dontknow, no, yes, notset = calc_avail_totals(gameday)
             html += "<p>"
             html += f'<p style="color:black">Not set: {notset}</p>'
             html += f'<p style="color:orange">Not sure: {dontknow.count()}</p>'
@@ -78,6 +80,39 @@ class list_index(TemplateView):
             html += f"</tr>"
 
         html += "</table>"
+
+        return html
+
+class gamedays_index(TemplateView):
+    model = Gameday
+    template_name = "pages/gamedays.html"
+
+    def generatetable(self):
+        html = ""
+
+        gamedays = Gameday.objects.all().order_by('date')
+        for gameday in gamedays:
+            print("xxxxxxx")
+            html += '<div class ="item">'
+            html += '<div class="row">'
+            html += '<div class="column70">'
+            html += f"<p><b>{gameday.date}</b></p>"
+            for game in gameday.games.all():
+                html += f"<p>{game.home} - {game.away}<br>({game.team})</p>"
+
+            dontknow, no, yes, notset = calc_avail_totals(gameday)
+            html += '</div>'
+            html += '<div class="column30">'
+
+            html += f'<div style="color:black">Not set: {notset}</div>'
+            html += f'<div style="color:orange">Not sure: {dontknow.count()}</div>'
+            html += f'<div style="color:red">No: {no.count()}</div>'
+            html += f'<div style="color:green">Yes!: {yes.count()}</div>'
+            html += '</div>'
+            html += '</div>'
+            html += '</div>'
+            html += '<div class ="break"> </div>'
+
 
         return html
 

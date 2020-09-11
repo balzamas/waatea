@@ -18,9 +18,11 @@ urlpatterns = [
     path("users/", include("waateax.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path("join/", views.game_index.as_view(), name="game_index"),
+    path("join/", views.join_index.as_view(), name="join_index"),
     path("list/", views.list_index.as_view(), name="list_index"),
-    path('join/toggleavail/', views.toggleavail, name='toggleavail'),
+    path("gamedays/", views.gamedays_index.as_view(), name="gamedays_index"),
+
+                  path('join/toggleavail/', views.toggleavail, name='toggleavail'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development
