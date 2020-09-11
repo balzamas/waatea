@@ -3,6 +3,7 @@ from waateaapp.models import Gameday, Availbility
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from waateax.users.models import User
+from django.template import loader
 
 def calc_avail_totals(gameday):
     dontknow = Availbility.objects.filter(gameday=gameday, player__active=True, state=1)
@@ -10,6 +11,59 @@ def calc_avail_totals(gameday):
     yes = Availbility.objects.filter(gameday=gameday, player__active=True, state=3)
     notset = User.objects.filter(active=True).count() - dontknow.count() - no.count() - yes.count()
     return dontknow, no, yes, notset
+
+def game(request, gameday_id):
+    gameday = Gameday.objects.get(id=gameday_id)
+    games = gameday.games.all()
+    whatsapp_text=f"?text=Are%20you%20available%20for%20{gameday.date}?%20Please%20update%20Waatea!"
+
+    dontknow, no, yes, notset = calc_avail_totals(gameday)
+    html = ""
+    html += "<p>"
+    html += f'<div style="color:black">Not set: {notset}</div>'
+    html += f'<div style="color:orange">Not sure: {dontknow.count()}</div>'
+    html += f'<div style="color:red">No: {no.count()}</div>'
+    html += f'<div style="color:green">Yes!: {yes.count()}</div>'
+    html += "</p>"
+
+    for player in User.objects.filter(active=True).order_by('name'):
+        check = Availbility.objects.filter(gameday=gameday, player=player)
+
+        if check.count() == 0:
+            print("Create Record")
+            check = Availbility(gameday=gameday, player=player)
+            check.save()
+
+    avail = Availbility.objects.filter(gameday=gameday, player__active=True).order_by('player__name')
+
+    template = loader.get_template('pages/game.html')
+    context = {
+        'games': games,
+        'gameday': gameday,
+        'availability': avail,
+        'whatsapp_text':whatsapp_text,
+        'totals' : html
+    }
+    return HttpResponse(template.render(context, request))
+
+class game_index(TemplateView):
+    model = Gameday
+    template_name = "pages/game.html"
+
+    def getgamelist(self):
+
+        print(self.request.user)
+
+        for gameday in Gameday.objects.all():
+                check = Availbility.objects.filter(gameday=gameday, player=self.request.user)
+                if check.count() == 0:
+                    print("Create Record")
+                    check = Availbility(gameday=gameday, player=self.request.user)
+                    check.save()
+
+
+        return Availbility.objects.filter(player=self.request.user).order_by('gameday__date')
+
 
 class join_index(TemplateView):
     model = Gameday
@@ -53,7 +107,7 @@ class list_index(TemplateView):
             html += "</th>"
         html += "</tr>"
 
-        for player in User.objects.filter(active=True):
+        for player in User.objects.filter(active=True).order_by('name'):
             html += f"<tr style='border: 1px solid black'><td>{player.name} </td>"
 
 
@@ -92,7 +146,7 @@ class gamedays_index(TemplateView):
 
         gamedays = Gameday.objects.all().order_by('date')
         for gameday in gamedays:
-            print("xxxxxxx")
+            html += f'<a href="/gameday/{gameday.id}">'
             html += '<div class ="item">'
             html += '<div class="row">'
             html += '<div class="column70">'
@@ -110,7 +164,7 @@ class gamedays_index(TemplateView):
             html += f'<div style="color:green">Yes!: {yes.count()}</div>'
             html += '</div>'
             html += '</div>'
-            html += '</div>'
+            html += '</a></div>'
             html += '<div class ="break"> </div>'
 
 
