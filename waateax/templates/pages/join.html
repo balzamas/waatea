@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
        <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
   </head>
 <body>
@@ -33,19 +34,13 @@ Welcome {{request.user.name }}
 <div align="center">
    <div class="container">
 
-
 {% for availability in view.getgamelist %}
-    <div class ="item">
-      <div class="row">
-        <div class="column70">
-          <b>{{ availability.gameday.date }}</b>
-              {% for game in availability.gameday.games.all %}
-                 <p>  {{ game.home }} vs {{ game.away }}<br>
-                 {{ game.team }} // {{ game.time }}</p>
-              {% endfor %}
-        </div>
-        <div class="column30r">
-
+     <div class="item">
+                  <div class="row">
+                    <div class="column40l">
+                      <div class="join_game">{{ availability.gameday.date |date:"D d M" }}</div>
+                    </div>
+                    <div class="column60r">
                 {% if availability.state == 0 %}
                   <button class="availbutton ui circular green icon button" id="availbutton0{{ availability.id }}" data-val=0 data-catid="{{ availability.id }}">
                 {% else %}
@@ -76,17 +71,21 @@ Welcome {{request.user.name }}
                 {% endif %}
                   <i class="thumbs down icon huge"></i>
                 </button>
-          </div>
+                    </div>
+                  </div>
+               {% for game in availability.gameday.games.all %}
 
-        </div>
+                       <div class="join_team">
+                         {{ game.team }} // {{ game.time }}
+                       </div>
+                      <div class="join_game">
+                         {{ game.home }} vs {{ game.away }}
+                      </div>
+              {% endfor %}
+     </div>
 
-    </div>
 
-
-
-    {% endfor %}
-
-</div>
+{% endfor %}
 
 {% endif %}
 
