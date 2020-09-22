@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from waateax.users.models import User
 from django.template import loader
+from datetime import date
 import csv
 
 def create_csv_gameday(request, gameday_id):
@@ -43,6 +44,9 @@ def calc_avail_totals(gameday):
 
 def update_availlist(gameday):
     for player in User.objects.filter(active=True).order_by('name'):
+        update_availlist_player(gameday, player)
+
+def update_availlist_player(gameday,player):
         check = Availbility.objects.filter(gameday=gameday, player=player)
 
         if check.count() == 0:
@@ -102,18 +106,12 @@ class join_index(TemplateView):
     template_name = "pages/join.html"
 
     def getgamelist(self):
-
         print(self.request.user)
 
-        for gameday in Gameday.objects.all():
-                check = Availbility.objects.filter(gameday=gameday, player=self.request.user)
-                if check.count() == 0:
-                    print("Create Record")
-                    check = Availbility(gameday=gameday, player=self.request.user)
-                    check.save()
+        for gameday in Gameday.objects.filter(date__gte=date.today()).order_by('date'):
+            update_availlist_player(gameday,self.request.user)
 
-
-        return Availbility.objects.filter(player=self.request.user).order_by('gameday__date')
+        return Availbility.objects.filter(player=self.request.user,gameday__date__gte=date.today()).order_by('gameday__date')
 
 class list_index(TemplateView):
     model = User
@@ -122,7 +120,7 @@ class list_index(TemplateView):
     def generatetable(self):
         table = {}
         html = "<table style='border: 1px solid black'><tr style='border: 1px solid black'><th></th>"
-        gamedays = Gameday.objects.all().order_by('date')
+        gamedays = Gameday.objects.filter(date__gte=date.today()).order_by('date')
         for gameday in gamedays:
             html += f"<th></th><th style='text-align:center'>{gameday.date}"
             for game in gameday.games.all():
@@ -143,7 +141,7 @@ class list_index(TemplateView):
             html += f"<tr style='border: 1px solid black'><td>{player.name} </td>"
 
 
-            for gameday in Gameday.objects.all().order_by('date'):
+            for gameday in Gameday.objects.filter(date__gte=date.today()).order_by('date'):
                 avail_ = Availbility.objects.filter(player=player,gameday=gameday)
                 html +="<td>&nbsp;&nbsp;&nbsp;</td>"
                 if (avail_.count() == 0):
@@ -176,7 +174,7 @@ class gamedays_index(TemplateView):
     def generatetable(self):
         html = ""
 
-        gamedays = Gameday.objects.all().order_by('date')
+        gamedays = Gameday.objects.filter(date__gte=date.today()).order_by('date')
         for gameday in gamedays:
             html += f'<a href="/gameday/{gameday.id}">'
             html += '<div class ="item">'
