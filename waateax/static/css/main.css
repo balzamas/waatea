@@ -3,7 +3,12 @@
 }
 
 .join_game {
-  font: 50px 'Roboto', sans-serif;
+  font: 40px 'Roboto', sans-serif;
+}
+
+.title {
+  font: 60px 'Roboto', sans-serif;
+
 }
 
 .container {
@@ -11,6 +16,8 @@
   flex-wrap: wrap;
   width: 900px;
 }
+
+
 
 .item {
   flex-grow: 1;
