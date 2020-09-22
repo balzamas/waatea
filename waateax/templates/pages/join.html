@@ -19,7 +19,7 @@
     <a href="/"><img src="{% static 'images/rcwlogo.jpg' %}"></a>
   </div>
   <div class="column70">
-    <h1>Set Availability</h1>
+    <div class="title">Set Availability</div>
   </div>
 </div>
 
@@ -29,8 +29,7 @@
 
 {% else %}
 
-Welcome {{request.user.name }}
-<hr>
+<div style="background-color: #000000;height: 100%;">
 
 <div align="center">
    <div class="container">
@@ -43,34 +42,34 @@ Welcome {{request.user.name }}
                     </div>
                     <div class="column60r">
                 {% if availability.state == 0 %}
-                  <button class="availbutton ui circular green icon button" id="availbutton0{{ availability.id }}" data-val=0 data-catid="{{ availability.id }}">
-                {% else %}
                   <button class="availbutton ui circular red icon button" id="availbutton0{{ availability.id }}" data-val=0 data-catid="{{ availability.id }}">
+                {% else %}
+                  <button class="availbutton ui circular black icon button" id="availbutton0{{ availability.id }}" data-val=0 data-catid="{{ availability.id }}">
                 {% endif %}
-                  <i class="hourglass half icon huge"></i>
+                  <i class="circular hourglass half icon big"></i>
                 </button>
 
                 {% if availability.state == 3 %}
                   <button class="availbutton ui circular green icon button" id="availbutton1{{ availability.id }}" data-val=3 data-catid="{{ availability.id }}">
                 {% else %}
-                  <button class="availbutton ui circular red icon button" id="availbutton1{{ availability.id }}" data-val=3 data-catid="{{ availability.id }}">
+                  <button class="availbutton ui circular black icon button" id="availbutton1{{ availability.id }}" data-val=3 data-catid="{{ availability.id }}">
                 {% endif %}
-                  <i class="thumbs up icon huge"></i>
+                  <i class="circular thumbs up icon big"></i>
                 </button>
                 {% if availability.state == 1 %}
                   <button class="availbutton ui circular green icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
                 {% else %}
-                  <button class="availbutton ui circular red icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
+                  <button class="availbutton ui circular black icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
                 {% endif %}
-                  <i class="question circle icon huge"></i>
+                  <i class="circular question circle icon big"></i>
                 </button>
 
                 {% if availability.state == 2 %}
                   <button class="availbutton ui circular green icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
                 {% else %}
-                  <button class="availbutton ui circular red icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
+                  <button class="availbutton ui circular black icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
                 {% endif %}
-                  <i class="thumbs down icon huge"></i>
+                  <i class="circular thumbs down icon big"></i>
                 </button>
                     </div>
                   </div>
@@ -92,6 +91,7 @@ Welcome {{request.user.name }}
 
 {% endblock %}
 </div>
+  </div>
 </body>
 
 
@@ -124,10 +124,10 @@ success: function( data )
     $( '#availbutton1'+ id ).removeClass('availbutton ui circular green icon button');
     $( '#availbutton2'+ id ).removeClass('availbutton ui circular green icon button');
     $( '#availbutton3'+ id ).removeClass('availbutton ui circular green icon button');
-    $( '#availbutton0'+ id ).addClass('availbutton ui circular red icon button');
-    $( '#availbutton1'+ id ).addClass('availbutton ui circular red icon button');
-    $( '#availbutton2'+ id ).addClass('availbutton ui circular red icon button');
-    $( '#availbutton3'+ id ).addClass('availbutton ui circular red icon button');
+    $( '#availbutton0'+ id ).addClass('availbutton ui circular black icon button');
+    $( '#availbutton1'+ id ).addClass('availbutton ui circular black icon button');
+    $( '#availbutton2'+ id ).addClass('availbutton ui circular black icon button');
+    $( '#availbutton3'+ id ).addClass('availbutton ui circular black icon button');
     object[0].className = ('availbutton ui circular green icon button');
     } }) };
 </script>
