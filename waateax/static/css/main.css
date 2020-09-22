@@ -1,3 +1,11 @@
+.join_team {
+  font: 25px 'Roboto', sans-serif;
+}
+
+.join_game {
+  font: 50px 'Roboto', sans-serif;
+}
+
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -24,12 +32,26 @@
   width: 65%;
   text-align: left;
   margin: 10px;
+}
 
+.column60r {
+  float: right;
+  width: 60%;
+  text-align: right;
+  margin: 10px;
 }
 
 .column30 {
   float: left;
   width: 25%;
+  text-align: left;
+  margin: 10px;
+
+}
+
+.column40l {
+  float: left;
+  width: 35%;
   text-align: left;
   margin: 10px;
 
