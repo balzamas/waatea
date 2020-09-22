@@ -4,6 +4,35 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from waateax.users.models import User
 from django.template import loader
+import csv
+
+def create_csv_gameday(request, gameday_id):
+    gameday = Gameday.objects.get(id=gameday_id)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="gameday.csv"'
+    writer = csv.writer(response)
+
+    update_availlist(gameday)
+
+    avail_list = Availbility.objects.filter(gameday=gameday, player__active=True).order_by('player__name')
+
+    writer.writerow([gameday.date])
+    for game in gameday.games.all():
+        writer.writerow([f"{game.home} vs {game.away}", f"{game.team}"])
+    writer.writerow([])
+    writer.writerow(["Name", "State", "Last update"])
+
+    for avail in avail_list:
+        writer.writerow([avail.player.name, avail.state, avail.updated])
+
+    writer.writerow([])
+    writer.writerow(["0 = Not Set"])
+    writer.writerow(["1 = Don't know"])
+    writer.writerow(["2 = Unavailable"])
+    writer.writerow(["3 = Available"])
+
+    return response
 
 def calc_avail_totals(gameday):
     dontknow = Availbility.objects.filter(gameday=gameday, player__active=True, state=1)
@@ -11,6 +40,15 @@ def calc_avail_totals(gameday):
     yes = Availbility.objects.filter(gameday=gameday, player__active=True, state=3)
     notset = User.objects.filter(active=True).count() - dontknow.count() - no.count() - yes.count()
     return dontknow, no, yes, notset
+
+def update_availlist(gameday):
+    for player in User.objects.filter(active=True).order_by('name'):
+        check = Availbility.objects.filter(gameday=gameday, player=player)
+
+        if check.count() == 0:
+            print("Create Record")
+            check = Availbility(gameday=gameday, player=player)
+            check.save()
 
 def game(request, gameday_id):
     gameday = Gameday.objects.get(id=gameday_id)
@@ -26,13 +64,7 @@ def game(request, gameday_id):
     html += f'<div style="color:green">Yes!: {yes.count()}</div>'
     html += "</p>"
 
-    for player in User.objects.filter(active=True).order_by('name'):
-        check = Availbility.objects.filter(gameday=gameday, player=player)
-
-        if check.count() == 0:
-            print("Create Record")
-            check = Availbility(gameday=gameday, player=player)
-            check.save()
+    update_availlist(gameday)
 
     avail = Availbility.objects.filter(gameday=gameday, player__active=True).order_by('player__name')
 

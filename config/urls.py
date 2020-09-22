@@ -21,10 +21,11 @@ urlpatterns = [
     path("join/", views.join_index.as_view(), name="join_index"),
     path("list/", views.list_index.as_view(), name="list_index"),
     path('gameday/<uuid:gameday_id>/', views.game, name='game'),
+    path('gameday_csv/<uuid:gameday_id>/', views.create_csv_gameday, name='gameday_csv'),
 
-                  path("gamedays/", views.gamedays_index.as_view(), name="gamedays_index"),
+    path("gamedays/", views.gamedays_index.as_view(), name="gamedays_index"),
 
-                  path('join/toggleavail/', views.toggleavail, name='toggleavail'),
+    path('join/toggleavail/', views.toggleavail, name='toggleavail'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development
