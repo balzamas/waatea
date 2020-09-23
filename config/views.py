@@ -36,17 +36,28 @@ def create_csv_gameday(request, gameday_id):
     return response
 
 def calc_avail_totals(gameday):
-    dontknow = Availbility.objects.filter(gameday=gameday, player__active=True, state=1)
-    no = Availbility.objects.filter(gameday=gameday, player__active=True, state=2)
-    yes = Availbility.objects.filter(gameday=gameday, player__active=True, state=3)
-    notset = User.objects.filter(active=True).count() - dontknow.count() - no.count() - yes.count()
+    dontknow = Availbility.objects.filter(gameday=gameday, player__active=True, state=1).count()
+    no = Availbility.objects.filter(gameday=gameday, player__active=True, state=2).count()
+    yes = Availbility.objects.filter(gameday=gameday, player__active=True, state=3).count()
+    notset = User.objects.filter(active=True).count() - dontknow - no - yes
+    return dontknow, no, yes, notset
+
+def calc_avail_totals_byplayer(player):
+    dontknow = Availbility.objects.filter(player=player, player__active=True, state=1).count()
+    no = Availbility.objects.filter(player=player, player__active=True, state=2).count()
+    yes = Availbility.objects.filter(player=player, player__active=True, state=3).count()
+    notset = Availbility.objects.filter(player=player, player__active=True, state=0).count()
+    print(yes)
+    print(no)
+    print(dontknow)
+    print(notset)
     return dontknow, no, yes, notset
 
 def update_availlist(gameday):
     for player in User.objects.filter(active=True).order_by('name'):
-        update_availlist_player(gameday, player)
+        update_availlist_by_player(gameday, player)
 
-def update_availlist_player(gameday,player):
+def update_availlist_by_player(gameday, player):
         check = Availbility.objects.filter(gameday=gameday, player=player)
 
         if check.count() == 0:
@@ -63,9 +74,9 @@ def game(request, gameday_id):
     html = ""
     html += "<p>"
     html += f'<div style="color:black">Not set: {notset}</div>'
-    html += f'<div style="color:orange">Not sure: {dontknow.count()}</div>'
-    html += f'<div style="color:red">No: {no.count()}</div>'
-    html += f'<div style="color:green">Yes!: {yes.count()}</div>'
+    html += f'<div style="color:orange">Not sure: {dontknow}</div>'
+    html += f'<div style="color:red">No: {no}</div>'
+    html += f'<div style="color:green">Yes!: {yes}</div>'
     html += "</p>"
 
     update_availlist(gameday)
@@ -106,10 +117,9 @@ class join_index(TemplateView):
     template_name = "pages/join.html"
 
     def getgamelist(self):
-        print(self.request.user)
 
         for gameday in Gameday.objects.filter(date__gte=date.today()).order_by('date'):
-            update_availlist_player(gameday,self.request.user)
+            update_availlist_by_player(gameday, self.request.user)
 
         return Availbility.objects.filter(player=self.request.user,gameday__date__gte=date.today()).order_by('gameday__date')
 
@@ -129,9 +139,9 @@ class list_index(TemplateView):
             dontknow, no, yes, notset = calc_avail_totals(gameday)
             html += "<p>"
             html += f'<p style="color:black">Not set: {notset}</p>'
-            html += f'<p style="color:orange">Not sure: {dontknow.count()}</p>'
-            html += f'<p style="color:red">No: {no.count()}</p>'
-            html += f'<p style="color:green">Yes!: {yes.count()}</p>'
+            html += f'<p style="color:orange">Not sure: {dontknow}</p>'
+            html += f'<p style="color:red">No: {no}</p>'
+            html += f'<p style="color:green">Yes!: {yes}</p>'
             html += "</p>"
 
             html += "</th>"
@@ -189,9 +199,9 @@ class gamedays_index(TemplateView):
             html += '<div class="column30">'
 
             html += f'<div style="color:black">Not set: {notset}</div>'
-            html += f'<div style="color:orange">Not sure: {dontknow.count()}</div>'
-            html += f'<div style="color:red">No: {no.count()}</div>'
-            html += f'<div style="color:green">Yes!: {yes.count()}</div>'
+            html += f'<div style="color:orange">Not sure: {dontknow}</div>'
+            html += f'<div style="color:red">No: {no}</div>'
+            html += f'<div style="color:green">Yes!: {yes}</div>'
             html += '</div>'
             html += '</div>'
             html += '</a></div>'
@@ -199,6 +209,17 @@ class gamedays_index(TemplateView):
 
 
         return html
+
+class base(TemplateView):
+    template_name = "base.html"
+
+    def getavails(self):
+        for gameday in Gameday.objects.filter(date__gte=date.today()).order_by('date'):
+            update_availlist_by_player(gameday, self.request.user)
+
+        dontknow, no, yes, notset = calc_avail_totals_byplayer(self.request.user)
+        print(notset)
+        return notset
 
 
 def toggleavail(request):

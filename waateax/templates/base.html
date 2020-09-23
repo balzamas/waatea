@@ -25,8 +25,8 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'images/favicons/favicon.ico' %}"/>
 
     <!-- This file stores project-specific CSS -->
-
-
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
     {% endblock %}
 
@@ -71,6 +71,7 @@
 
     </div>
 
+
     <div class="container">
 
       {% if messages %}
@@ -89,12 +90,28 @@
       <p>Welcome {{request.user.name }}!</p>
       {% endif %}
 
-      <a href="join/">Set your availability</a><br>
-      <p><a href="gamedays/">See availabilities (List)</a></p><br>
-      <p><a href="list/">See availabilities (Megatable)</a></p><br>
+      {% if request.user.is_authenticated %}
+
+      <h2>Games not set: {{ view.getavails }}</h2>
+
+
+      <p><a href="join/"><button class="ui button" >Set your availability</button></a></p>
+
+
+      <p><b>Useful links:</b></p>
+      <p><a href="https://work.rugbywinterthur.ch" target="_blank">Work @ Rugby Winterthur</a><br> (Work plans, sign up process etc.)</p>
+      <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSe-9FXVIY3DGBpI6UWbb_OaUH3L4StgzyWx9DcJ-vJ0sh0Hqg/viewform?usp=pp_url&entry.137120989=Training" target="_blank">Corona register form</a></p>
+      <p><a href="https://fsr.sportlomo.com/competitions/" target="_blank">FSR Competition tables</a> </p>
 
       Problems? Contact president@rugbywinterthur.ch<br>
-      <a href="https://github.com/balzamas/waatea/issues">Dev issues</a>
+      <p><a href="https://github.com/balzamas/waatea/issues">Github Issues</a></p>
+      {% else %}
+            <p><a href="{% url 'account_login' %}"><button class="ui button" >Log in</button></a></p>
+            <p><a href="{% url 'account_signup' %}"><button class="ui button" >Sign up</button></a></p>
+
+
+      {% endif %}
+
       {% endblock content %}
 
     </div> <!-- /container -->
