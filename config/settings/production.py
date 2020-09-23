@@ -77,13 +77,13 @@ TEMPLATES[-1]["OPTIONS"]["loaders"] = [  # type: ignore[index] # noqa F405
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
 DEFAULT_FROM_EMAIL = env(
-    "DJANGO_DEFAULT_FROM_EMAIL", default="waateax <noreply@waatea.vip>"
+    "DJANGO_DEFAULT_FROM_EMAIL", default="RC Winterthur <president@rugbywinterthur.ch>"
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env(
-    "DJANGO_EMAIL_SUBJECT_PREFIX", default="[waateax]"
+    "DJANGO_EMAIL_SUBJECT_PREFIX", default="[waatea]"
 )
 
 # ADMIN
@@ -153,3 +153,10 @@ LOGGING = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+SENDGRID_API_KEY = env("SENDGRID_API_KEY")
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
