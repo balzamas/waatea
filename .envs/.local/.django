@@ -2,3 +2,4 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+SENDGRID_API_KEY=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
