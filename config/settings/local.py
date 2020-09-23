@@ -26,11 +26,11 @@ CACHES = {
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = "sgbackend.SendGridBackend"
+#EMAIL_BACKEND = "sgbackend.SendGridBackend"
 
-#EMAIL_BACKEND = env(
-#    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
-#)
+EMAIL_BACKEND = env(
+    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
+)
 
 # WhiteNoise
 # ------------------------------------------------------------------------------
@@ -64,4 +64,3 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-SENDGRID_API_KEY = env("SENDGRID_API_KEY")
