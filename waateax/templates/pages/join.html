@@ -120,6 +120,7 @@ $.ajax(
 },
 success: function( data )
 {
+    $( '#availbutton0'+ id ).removeClass('availbutton ui circular red icon button');
     $( '#availbutton0'+ id ).removeClass('availbutton ui circular green icon button');
     $( '#availbutton1'+ id ).removeClass('availbutton ui circular green icon button');
     $( '#availbutton2'+ id ).removeClass('availbutton ui circular green icon button');
