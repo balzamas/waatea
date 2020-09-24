@@ -83,8 +83,9 @@
       {% block content %}
       {% if request.user.name == "" %}
         <p>
-          <b>Important!</b>
+          <h1>Important!</h1>
           Please set your real name first: <a href="users/~update/">Change</a>
+          <h1>!!!!!!!!!!</h1>
         </p>
       {% else %}
       <p>Welcome {{request.user.name }}!</p>
