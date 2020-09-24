@@ -47,10 +47,6 @@ def calc_avail_totals_byplayer(player):
     no = Availbility.objects.filter(player=player, player__active=True, state=2).count()
     yes = Availbility.objects.filter(player=player, player__active=True, state=3).count()
     notset = Availbility.objects.filter(player=player, player__active=True, state=0).count()
-    print(yes)
-    print(no)
-    print(dontknow)
-    print(notset)
     return dontknow, no, yes, notset
 
 def update_availlist(gameday):
@@ -181,6 +177,22 @@ class gamedays_index(TemplateView):
     model = Gameday
     template_name = "pages/gamedays.html"
 
+    def getgames(self):
+        gamedays = Gameday.objects.filter(date__gte=date.today()).order_by('date')
+        return gamedays
+
+    def getavail(self, gameday):
+        dontknow, no, yes, notset = calc_avail_totals(gameday)
+        html += '</div>'
+        html += '<div class="column30">'
+        html += f'<div style="color:green">Yes!: {yes}</div>'
+        html += f'<div style="color:black">Not set: {notset}</div>'
+        html += f'<div style="color:orange">Not sure: {dontknow}</div>'
+        html += f'<div style="color:red">No: {no}</div>'
+        html += '</div>'
+        return html
+
+    #Horrible style
     def generatetable(self):
         html = ""
 
@@ -198,10 +210,10 @@ class gamedays_index(TemplateView):
             html += '</div>'
             html += '<div class="column30">'
 
+            html += f'<div style="color:green">Yes!: {yes}</div>'
             html += f'<div style="color:black">Not set: {notset}</div>'
             html += f'<div style="color:orange">Not sure: {dontknow}</div>'
             html += f'<div style="color:red">No: {no}</div>'
-            html += f'<div style="color:green">Yes!: {yes}</div>'
             html += '</div>'
             html += '</div>'
             html += '</a></div>'

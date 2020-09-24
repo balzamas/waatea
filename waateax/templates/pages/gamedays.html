@@ -31,10 +31,26 @@
 
 Welcome {{request.user.name }}
 <hr>
-
 <div align="center">
    <div class="container">
-        {% autoescape off %}{{ view.generatetable }}{% endautoescape %}
+ <!--    {% for gameday in view.getgames %}
+             <a href="/gameday/{{gameday.id}}">
+              <div class ="item">
+                <div class="row">
+                  <div class="column70">
+                    <p><b>{{gameday.date}}</b></p>
+                      {% for game in gameday.games.all %}
+                          <p>{{game.home}} - {{game.away}}<br>({{game.team}})</p>
+                      {% endfor %}
+                  </div>
+                  <div>
+                    {{ view.generatetable }}
+                  </div>
+                </div>
+              </div>
+             </a>
+     {% endfor %} -->
+     {% autoescape off %}{{ view.generatetable }}{% endautoescape %}
   </div>
 </div>
 
