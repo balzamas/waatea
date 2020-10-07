@@ -42,8 +42,10 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
   <input type="hidden" name="next" value="/">
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a><br>
   <button class="primaryAction btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+  <br><br><p>If you have problems recovering your passwort/user, contact president@rugbywinterthur.ch or <a href="https://wa.me/41798257004" target="_blank"><i class="whatsapp icon large green"></i></a>.<br></p>
+
 </form>
 
 {% endblock %}

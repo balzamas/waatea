@@ -83,10 +83,20 @@
       {% block content %}
       {% if request.user.name == "" %}
         <p>
+          <h1>!!!!!!!!!!</h1>
+          <h1>!!!!!!!!!!</h1>
+          <h1>!!!!!!!!!!</h1>
+          <h1>!!!!!!!!!!</h1>
+
           <h1>Important!</h1>
           Please set your real name and phone number first: <a href="users/~update/">Change</a><br>
           Bitte zuerst Name und TelNr. setzen: <a href="users/~update/">Change</a><br>
           <h1>!!!!!!!!!!</h1>
+          <h1>!!!!!!!!!!</h1>
+          <h1>!!!!!!!!!!</h1>
+          <h1>!!!!!!!!!!</h1>
+          <h1>!!!!!!!!!!</h1>
+
         </p>
       {% else %}
       <p>Welcome {{request.user.name }}!</p>
@@ -110,7 +120,7 @@
       {% else %}
             <p><a href="{% url 'account_login' %}"><button class="ui button" >Log in</button></a></p>
             <p><a href="{% url 'account_signup' %}"><button class="ui button" >Sign up</button></a></p>
-            If you have problems recovering your passwort/usr, contact president@rugbywinterthur.ch or <a href="https://wa.me/41798257004" target="_blank"><i class="whatsapp icon large green"></i></a>.
+            If you have problems recovering your passwort/user, contact president@rugbywinterthur.ch or <a href="https://wa.me/41798257004" target="_blank"><i class="whatsapp icon large green"></i></a>.
 
 
       {% endif %}
