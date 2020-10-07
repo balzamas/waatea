@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
     image: waateax_local_django
-    container_name: django
+    container_name: django_waatea
     depends_on:
       - postgres
     volumes:
@@ -27,7 +27,7 @@ services:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
     image: waateax_production_postgres
-    container_name: postgres
+    container_name: postgres_waatea
     volumes:
       - local_postgres_data:/var/lib/postgresql/data:Z
       - local_postgres_data_backups:/backups:z
@@ -36,7 +36,7 @@ services:
 
   docs:
     image: waateax_local_docs
-    container_name: docs
+    container_name: docs_waatea
     build:
       context: .
       dockerfile: ./compose/local/docs/Dockerfile

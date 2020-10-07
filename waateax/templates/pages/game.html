@@ -52,12 +52,10 @@ Welcome {{request.user.name }}
         <div class="column30">
                {% if avail.state == 0 %}
                   <i class="hourglass half icon large"></i>
-                  <a href="https://wa.me/{{ avail.player.mobile_phone }}{{whatsapp_text}}" target="_blank"><i class="whatsapp icon large green"></i></a>
                 {% endif %}
 
                 {% if avail.state == 1 %}
                   <i class="question circle icon large orange"></i>
-                  <a href="https://wa.me/{{ avail.player.mobile_phone }}{{whatsapp_text}}" target="_blank"><i class="whatsapp icon large green"></i></a>
                 {% endif %}
 
                 {% if avail.state == 2 %}
@@ -67,6 +65,7 @@ Welcome {{request.user.name }}
                 {% if avail.state == 3 %}
                   <i class="thumbs up icon large green"></i>
                 {% endif %}
+                  <a href="https://wa.me/{{ avail.player.mobile_phone }}{{whatsapp_text}}" target="_blank"><i class="whatsapp icon large green"></i></a>
 
 
         </div>
