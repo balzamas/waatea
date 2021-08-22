@@ -61,7 +61,8 @@ def update_availlist_by_player(gameday, player):
             check = Availbility(gameday=gameday, player=player)
             check.save()
 
-def game(request, gameday_id):
+
+def game(request, gameday_id, sort_field="player__name", state_filter=-1):
     gameday = Gameday.objects.get(id=gameday_id)
     games = gameday.games.all()
     whatsapp_text=f"?text=Are%20you%20available%20for%20{gameday.date}?%20Please%20update%20Waatea!"
@@ -69,17 +70,38 @@ def game(request, gameday_id):
     dontknow, no, yes, notset = calc_avail_totals(gameday)
     html = ""
     html += "<p>"
-    html += f'<div style="color:black">Not set: {notset}</div>'
-    html += f'<div style="color:orange">Not sure: {dontknow}</div>'
-    html += f'<div style="color:red">No: {no}</div>'
-    html += f'<div style="color:green">Yes!: {yes}</div>'
+    html += f'<div style="color:black">Not set: <a href="/gameday/{gameday.id}/?filter=0">{notset}</a></div>'
+    html += f'<div style="color:orange">Not sure: <a href="/gameday/{gameday.id}/?filter=1">{dontknow}</a></div>'
+    html += f'<div style="color:red">No: <a href="/gameday/{gameday.id}/?filter=2">{no}</a></div>'
+    html += f'<div style="color:green">Yes!: <a href="/gameday/{gameday.id}/?filter=3"> {yes}</a></div>'
     html += "</p>"
 
+    if request.method == "GET":
+        sort_field = request.GET.get("sort", sort_field)
+        state_filter = int(request.GET.get("filter", state_filter))
+
+    if 0 <= state_filter <= 4:
+        avail = Availbility.objects.filter(
+            gameday=gameday, player__active=True, state=state_filter
+        ).order_by(sort_field)
+        state_name = Availbility.STATE_CHOICES[state_filter][-1]
+        html += f'<div style="color:black">Showing only state {state_name}. '
+        html += f'<a href="/gameday/{gameday.id}">Click to remove</a></div>'
+    else:
+        avail = Availbility.objects.filter(
+            gameday=gameday, player__active=True
+        ).order_by(sort_field)
+
     update_availlist(gameday)
+    html += "<p>"
+    html += "Sort by: "
+    html += f"<a href=/gameday/{gameday.id}/?sort=player__name&filter={state_filter}>Player</a>,  "
+    html += f"<a href=/gameday/{gameday.id}/?sort=updated&filter={state_filter}>Last Updated</a>,  "
+    html += (
+        f"<a href=/gameday/{gameday.id}/?sort=state&filter={state_filter}>Status</a>,  "
+    )
 
-    avail = Availbility.objects.filter(gameday=gameday, player__active=True).order_by('player__name')
-
-    template = loader.get_template('pages/game.html')
+    template = loader.get_template("pages/game.html")
     context = {
         'games': games,
         'gameday': gameday,
