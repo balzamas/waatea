@@ -96,7 +96,7 @@ def game(request, gameday_id, sort_field="player__name", state_filter=-1):
     html += "<p>"
     html += "Sort by: "
     html += f"<a href=/gameday/{gameday.id}/?sort=player__name&filter={state_filter}>Player</a>,  "
-    html += f"<a href=/gameday/{gameday.id}/?sort=updated&filter={state_filter}>Last Updated</a>,  "
+    html += f"<a href=/gameday/{gameday.id}/?sort=-updated&filter={state_filter}>Last Updated</a>,  "
     html += (
         f"<a href=/gameday/{gameday.id}/?sort=state&filter={state_filter}>Status</a>,  "
     )
