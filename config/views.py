@@ -70,10 +70,10 @@ def game(request, gameday_id, sort_field="player__name", state_filter=-1):
     dontknow, no, yes, notset = calc_avail_totals(gameday)
     html = ""
     html += "<p>"
-    html += f'<div style="color:black">Not set: <a href="/gameday/{gameday.id}/?filter=0">{notset}</a></div>'
-    html += f'<div style="color:orange">Not sure: <a href="/gameday/{gameday.id}/?filter=1">{dontknow}</a></div>'
-    html += f'<div style="color:red">No: <a href="/gameday/{gameday.id}/?filter=2">{no}</a></div>'
-    html += f'<div style="color:green">Yes!: <a href="/gameday/{gameday.id}/?filter=3"> {yes}</a></div>'
+    html += f'<h2><div style="color:black">Not set: <a href="/gameday/{gameday.id}/?filter=0">{notset}</a></div></h2>'
+    html += f'<h2><div style="color:orange">Not sure: <a href="/gameday/{gameday.id}/?filter=1">{dontknow}</a></div></h2>'
+    html += f'<h2><div style="color:red">No: <a href="/gameday/{gameday.id}/?filter=2">{no}</a></div></h2>'
+    html += f'<h2><div style="color:green">Yes!: <a href="/gameday/{gameday.id}/?filter=3"> {yes}</a></div></h2>'
     html += "</p>"
 
     if request.method == "GET":
@@ -85,8 +85,8 @@ def game(request, gameday_id, sort_field="player__name", state_filter=-1):
             gameday=gameday, player__active=True, state=state_filter
         ).order_by(sort_field)
         state_name = Availbility.STATE_CHOICES[state_filter][-1]
-        html += f'<div style="color:black">Showing only state {state_name}. '
-        html += f'<a href="/gameday/{gameday.id}">Click to remove</a></div>'
+        html += f'<h2><div style="color:black">Showing only state {state_name}. '
+        html += f'<a href="/gameday/{gameday.id}">Click to remove</a></div></h2>'
     else:
         avail = Availbility.objects.filter(
             gameday=gameday, player__active=True
@@ -94,11 +94,11 @@ def game(request, gameday_id, sort_field="player__name", state_filter=-1):
 
     update_availlist(gameday)
     html += "<p>"
-    html += "Sort by: "
+    html += "<h2>Sort by: "
     html += f"<a href=/gameday/{gameday.id}/?sort=player__name&filter={state_filter}>Player</a>,  "
     html += f"<a href=/gameday/{gameday.id}/?sort=-updated&filter={state_filter}>Last Updated</a>,  "
     html += (
-        f"<a href=/gameday/{gameday.id}/?sort=state&filter={state_filter}>Status</a>,  "
+        f"<a href=/gameday/{gameday.id}/?sort=state&filter={state_filter}>Status</a></h2>  "
     )
 
     template = loader.get_template("pages/game.html")
