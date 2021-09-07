@@ -1,3 +1,8 @@
+##v0.3.0
+### Feature
+- ENH: Larger fonts for filters (game view)
+- ENH backlink to games list from game view
+
 ##v0.2.0
 ###Feature
 - ENH: Add ability to filter & sort availability #24 
