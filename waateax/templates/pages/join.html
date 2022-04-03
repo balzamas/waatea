@@ -57,7 +57,7 @@
                   <i class="circular thumbs up icon big"></i>
                 </button>
                 {% if availability.state == 1 %}
-                  <button class="availbutton ui circular green icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
+                  <button class="availbutton ui circular yellow icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
                 {% else %}
                   <button class="availbutton ui circular black icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
                 {% endif %}
@@ -65,7 +65,7 @@
                 </button>
 
                 {% if availability.state == 2 %}
-                  <button class="availbutton ui circular green icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
+                  <button class="availbutton ui circular red icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
                 {% else %}
                   <button class="availbutton ui circular black icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
                 {% endif %}
