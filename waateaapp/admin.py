@@ -8,9 +8,18 @@ admin.site.register(Team)
 admin.site.register(Season)
 
 class GameAdmin(admin.ModelAdmin):
-    list_display = ['home', 'away', 'team', 'season']
+    list_display = ['home', 'away', 'team', 'season', 'get_date']
     ordering = ['team']
     list_filter = ('season', 'team')
+
+    def get_date(self, obj):
+        gamedays = Gameday.objects.filter(games=obj)
+        if gamedays:
+            return gamedays[0].date
+        else:
+            return "-"
+
+    get_date.short_description = 'Date'
 
 admin.site.register(Game, GameAdmin)
 
