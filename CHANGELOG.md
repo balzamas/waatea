@@ -1,3 +1,7 @@
+##v0.4.0
+### Feature
+- ENH: Add Date column in Game admin page
+
 ##v0.3.0
 ### Feature
 - ENH: Larger fonts for filters (game view)
