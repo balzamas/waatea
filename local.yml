@@ -33,18 +33,3 @@ services:
       - local_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.local/.postgres
-
-  docs:
-    image: waateax_local_docs
-    container_name: docs_waatea
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./waateax:/app/waateax:z
-    ports:
-      - "7000:7000"
