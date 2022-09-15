@@ -1,3 +1,9 @@
+##v0.5.0
+### Fix
+- availability button colors
+- favicon error
+- remove corona form
+
 ##v0.4.0
 ### Feature
 - ENH: Add Date column in Game admin page
