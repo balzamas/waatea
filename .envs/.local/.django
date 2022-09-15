@@ -2,3 +2,5 @@ EMAIL_ADDR=xxx@gmail.com
 EMAIL_PASSWORD=xxxx
 
 USE_DOCKER=True
+
+DJANGO_ADMIN_URL=admin

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 from waateaapp.models import Gameday, Availbility
 from django.http import HttpResponse
 from django.views.generic import TemplateView
@@ -157,7 +158,8 @@ def gameedit(request, gameday_id, sort_field="player__name", state_filter=-1):
         'gameday': gameday,
         'availability': avail,
         'whatsapp_text':whatsapp_text,
-        'totals' : html
+        'totals' : html,
+        'adminurl': settings.ADMIN_URL
     }
     return HttpResponse(template.render(context, request))
 
