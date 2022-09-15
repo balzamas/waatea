@@ -57,7 +57,7 @@
                   <i class="circular thumbs up icon big"></i>
                 </button>
                 {% if availability.state == 1 %}
-                  <button class="availbutton ui circular green icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
+                  <button class="availbutton ui circular yellow icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
                 {% else %}
                   <button class="availbutton ui circular black icon button" id="availbutton2{{ availability.id }}" data-val=1 data-catid="{{ availability.id }}">
                 {% endif %}
@@ -65,7 +65,7 @@
                 </button>
 
                 {% if availability.state == 2 %}
-                  <button class="availbutton ui circular green icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
+                  <button class="availbutton ui circular red icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
                 {% else %}
                   <button class="availbutton ui circular black icon button" id="availbutton3{{ availability.id }}" data-val=2 data-catid="{{ availability.id }}">
                 {% endif %}
@@ -110,25 +110,41 @@ $('.availbutton').click(function(){
 function SetAvail(id, value, object)
 {
 
-$.ajax(
-{
-    type:"GET",
-    url: "toggleavail",
-    data:{
-             post_id: id,
-             post_value: value
-},
-success: function( data )
-{
-    $( '#availbutton0'+ id ).removeClass('availbutton ui circular red icon button');
-    $( '#availbutton0'+ id ).removeClass('availbutton ui circular green icon button');
-    $( '#availbutton1'+ id ).removeClass('availbutton ui circular green icon button');
-    $( '#availbutton2'+ id ).removeClass('availbutton ui circular green icon button');
-    $( '#availbutton3'+ id ).removeClass('availbutton ui circular green icon button');
-    $( '#availbutton0'+ id ).addClass('availbutton ui circular black icon button');
-    $( '#availbutton1'+ id ).addClass('availbutton ui circular black icon button');
-    $( '#availbutton2'+ id ).addClass('availbutton ui circular black icon button');
-    $( '#availbutton3'+ id ).addClass('availbutton ui circular black icon button');
-    object[0].className = ('availbutton ui circular green icon button');
-    } }) };
+    $.ajax(
+      {
+        type: "GET",
+        url: "toggleavail",
+        data: {
+          post_id: id,
+          post_value: value
+        },
+
+        success: function (data) {
+          debugger;
+          $('#availbutton0' + id).removeClass('availbutton ui circular red icon button');
+          $('#availbutton0' + id).removeClass('availbutton ui circular black icon button');
+          $('#availbutton1' + id).removeClass('availbutton ui circular green icon button');
+          $('#availbutton1' + id).removeClass('availbutton ui circular black icon button');
+          $('#availbutton2' + id).removeClass('availbutton ui circular yellow icon button');
+          $('#availbutton2' + id).removeClass('availbutton ui circular black icon button');
+          $('#availbutton3' + id).removeClass('availbutton ui circular red icon button');
+          $('#availbutton3' + id).removeClass('availbutton ui circular black icon button');
+
+          $('#availbutton0' + id).addClass('availbutton ui circular black icon button');
+          $('#availbutton1' + id).addClass('availbutton ui circular black icon button');
+          $('#availbutton2' + id).addClass('availbutton ui circular black icon button');
+          $('#availbutton3' + id).addClass('availbutton ui circular black icon button');
+
+          if (object[0].id.includes("availbutton0")) {
+            object[0].className = ('availbutton ui circular red icon button');
+          } else if (object[0].id.includes("availbutton1")) {
+            object[0].className = ('availbutton ui circular green icon button');
+          } else if (object[0].id.includes("availbutton2")) {
+            object[0].className = ('availbutton ui circular yellow icon button');
+          } else if (object[0].id.includes("availbutton3")) {
+            object[0].className = ('availbutton ui circular red icon button');
+          } else { }
+        }
+      })
+  };
 </script>
