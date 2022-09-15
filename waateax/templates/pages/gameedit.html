@@ -1,0 +1,101 @@
+{% load static %}
+
+
+
+<html lang="en">
+  <head>
+    <title>Waatea RC Winterthur</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+       <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicons/favicon.ico' %}"/>
+
+
+  </head>
+<body>
+{% if request.user.is_superuser %}
+{% block page_content %}
+<div style="margin:20px">
+<div class="row">
+  <div class="column30">
+    <a href="/"><img src="{% static 'images/rcwlogo.jpg' %}"></a>
+  </div>
+
+  <div class="column70">
+    <h1>{{ gameday.date }}</h1>
+        {% for game in games %}
+      {{ game.home }} - {{ game.away }}<br>
+       {{ game.team }} // {{ game.time }}<br>
+    {% endfor %}
+  </div>
+</div>
+{% if not request.user.is_authenticated %}
+<a href="/">Login first</a>
+
+{% else %}
+
+Welcome {{request.user.name }}
+<hr>
+  <h2><a href="/gameday_csv/{{ gameday.id }}">CSV Export</a> // <a href="/gamedays/">Go back to all games</a></h2>
+<hr>
+
+
+
+  <div align="center">
+    {% autoescape off %}{{totals}}{% endautoescape %}
+
+   <div class="container">
+    {% for avail in availability %}
+      <div class ="item">
+       <div class="row">
+        <div class="column70">
+          {{ avail.player.name }}
+          <font size="1px">Last update: {{ avail.updated }}</font>
+
+        </div>
+        <div class="column30">
+               {% if avail.state == 0 %}
+                  <i class="hourglass half icon large"></i>
+                {% endif %}
+
+                {% if avail.state == 1 %}
+                  <i class="question circle icon large orange"></i>
+                {% endif %}
+
+                {% if avail.state == 2 %}
+                  <i class="thumbs down icon large red"></i>
+                {% endif %}
+
+                {% if avail.state == 3 %}
+                  <i class="thumbs up icon large green"></i>
+                {% endif %}
+                  <a href="https://wa.me/{{ avail.player.mobile_phone }}{{whatsapp_text}}" target="_blank"><i class="whatsapp icon large green"></i></a>
+
+                <a href="/admin/waateaapp/availbility/{{ avail.id }}/change/" target="_blank">EDIT</a>
+
+        </div>
+       </div>
+      </div>
+
+    {% endfor %}
+   </div>
+  </div>
+
+
+{% endif %}
+
+{% endblock %}
+
+</div>
+
+{% else %}
+You don't have permissions for this
+{% endif %}
+</body>
+
+
+<script type="text/javascript">
+
+
+</script>

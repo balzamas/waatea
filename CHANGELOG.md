@@ -1,4 +1,7 @@
 ##v0.5.0
+### Feature
+- Enable editing of player states for superusers
+
 ### Fix
 - availability button colors
 - favicon error
